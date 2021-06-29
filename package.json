@@ -1,0 +1,21 @@
+{
+  "name": "contactappb07",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "back": "cd backend && npm start",
+    "front": "cd frontend && npm start",
+    "start": "concurrently --kill-others-on-fail --names \"backend,frontend\" \"npm run back\" \"npm run front\"",
+	"postinstall":"cd frontend && npm install && cd .. && cd backend && npm install"
+  },
+
+
+
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^6.2.0"
+  }
+}
