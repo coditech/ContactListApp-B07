@@ -11,7 +11,6 @@ const initializeDatabase = async () => {
    * retrieves the contacts from the database
    */
   const getContactsList = async (order) => {
-    console.log(order);
     let statement = "SELECT contact_id AS id, name, email FROM contacts";
     if (order === "name") {
       statement += " ORDER BY name";
@@ -19,40 +18,68 @@ const initializeDatabase = async () => {
     if (order === "email") {
       statement += " ORDER BY email";
     }
-    const rows = await db.all(statement);
-    // rows.forEach( ({ id, name, email }) => returnString+=`[id:${id}] - ${name} - ${email}` )
-    return rows;
+    try {
+      const rows = await db.all(statement);
+      return rows;
+    } catch (e) {
+      throw new Error("Was not able to retrieve list of contacts");
+    }
   };
 
   const getContact = async (id) => {
     let statement = `SELECT contact_id AS id, name, email FROM contacts where contact_id= ${id}`;
-
-    const rows = await db.all(statement);
-    // rows.forEach( ({ id, name, email }) => returnString+=`[id:${id}] - ${name} - ${email}` )
-    return rows;
+    try {
+      const rows = await db.all(statement);
+      return rows;
+    } catch (e) {
+      throw new Error(`Was not able to retrieve the contact with id ${id}`);
+    }
   };
-  const createContact = async (blah) => {
-    const { name, email } = blah;
+  const createContact = async (props) => {
+    if (!props || !props.name || !props.email) {
+      throw new Error(`Name and email need to be specified.`);
+    }
+
+    const { name, email } = props;
     // const name = props.name; const email = props.email;
-    //to do check that name and email both exist
-    const result = await db.run(
-      `INSERT INTO contacts (name,email) VALUES (?, ?)`,
-      [name, email]
-    );
-    //console.log(result);
-    //check if changes = 0 then an error should be created
-    const id = result.lastID;
-    return id;
+    try {
+      const result = await db.run(
+        `INSERT INTO contacts (name,email) VALUES (?, ?)`,
+        [name, email]
+      );
+
+      //check if changes = 0 then an error should be created
+      if (result.changes === 0) {
+        throw new Error(
+          `Was not able to create a contact with the given name and email.`
+        );
+      }
+      const id = result.lastID;
+
+      return id;
+    } catch (e) {
+      throw new Error(`Was not able to create a contact.`);
+    }
   };
 
   const deleteContact = async (id) => {
-    const result = await db.run(`DELETE from contacts where contact_id= ${id}`);
-    if (result.changes != 0) {
-      return true; //to do a success message
-    } else return false; //to do an error
+    try {
+      const result = await db.run(
+        `DELETE from contacts where contact_id= ${id}`
+      );
+      if (result.changes != 0) {
+        return true; //to do a success message
+      } else
+        throw new Error(`Could not find the contact with id ${id} to delete.`);
+    } catch (e) {
+      throw new Error(`Was not able to delete contact.`);
+    }
   };
-  const updateContact = async (id, blah) => {
-    const { name, email } = blah;
+  const updateContact = async (id, props) => {
+    if (!props) {
+      throw new Error(`You need to specify new name and or email to update.`);
+    }
+    const { name, email } = props;
     let stmt,
       params = [];
     if (name && email) {
@@ -65,9 +92,16 @@ const initializeDatabase = async () => {
       stmt = `UPDATE contacts SET email = ? WHERE contact_id = ?`;
       params = [email, id];
     }
-    const result = await db.run(stmt, ...params);
-    if (result.changes === 0) return false;
-    return true;
+    try {
+      const result = await db.run(stmt, ...params);
+      if (result.changes === 0)
+        throw new Error(
+          `Was not able to find the contact with id ${id} to update.`
+        );
+      return true;
+    } catch (e) {
+      throw new Error(`Was not able to update the contact with id ${id}.`);
+    }
   };
 
   const controller = {
