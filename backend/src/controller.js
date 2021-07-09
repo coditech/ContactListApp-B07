@@ -11,7 +11,7 @@ const initializeDatabase = async () => {
    * retrieves the contacts from the database
    */
   const getContactsList = async (order) => {
-    let statement = "SELECT contact_id AS id, name, email FROM contacts";
+    let statement = "SELECT contact_id AS id, name, email, image FROM contacts";
     if (order === "name") {
       statement += " ORDER BY name";
     }
@@ -27,7 +27,7 @@ const initializeDatabase = async () => {
   };
 
   const getContact = async (id) => {
-    let statement = `SELECT contact_id AS id, name, email FROM contacts where contact_id= ${id}`;
+    let statement = `SELECT contact_id AS id, name, email, image FROM contacts where contact_id= ${id}`;
     try {
       const rows = await db.all(statement);
       return rows;
@@ -40,12 +40,12 @@ const initializeDatabase = async () => {
       throw new Error(`Name and email need to be specified.`);
     }
 
-    const { name, email } = props;
+    const { name, email, image } = props;
     // const name = props.name; const email = props.email;
     try {
       const result = await db.run(
-        `INSERT INTO contacts (name,email) VALUES (?, ?)`,
-        [name, email]
+        `INSERT INTO contacts (name,email, image) VALUES (?, ?,?)`,
+        [name, email, image]
       );
 
       //check if changes = 0 then an error should be created

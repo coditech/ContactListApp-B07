@@ -9,7 +9,11 @@ export default function ContactCard(props) {
       />
       <figcaption>
         <img
-          src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/profile-sample4.jpg"
+          src={
+            props.contact.image
+              ? `http://localhost:8000/images/${props.contact.image}`
+              : "https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/profile-sample4.jpg"
+          }
           alt="profile-sample4"
           className="profile"
         />
@@ -22,7 +26,7 @@ export default function ContactCard(props) {
           More Info
         </a>
         <button
-          className="info"
+          className="follow"
           onClick={() => props.deleteContact(props.contact.id)}
         >
           Delete

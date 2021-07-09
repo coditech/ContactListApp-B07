@@ -92,7 +92,8 @@ body {
   border-width: 55px 0 0 400px;
   border-color: transparent transparent transparent #141414;
 }
-.snip1336 figcaption a {
+.snip1336 figcaption a,
+button {
   padding: 5px;
   border: 1px solid #ffffff;
   color: #ffffff;
@@ -106,8 +107,11 @@ body {
   text-decoration: none;
   font-weight: 600;
   letter-spacing: 1px;
+  line-height: 1.4em;
+  background: transparent;
 }
-.snip1336 figcaption a:hover {
+.snip1336 figcaption a:hover,
+button:hover {
   opacity: 1;
 }
 .snip1336 .profile {
@@ -121,7 +125,7 @@ body {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 .snip1336 .follow {
-  margin-right: 4%;
+  margin-right: 2%;
   border-color: #2980b9;
   color: #2980b9;
 }
@@ -186,4 +190,134 @@ body {
     height: calc(100vh - 50px);
     overflow-y: auto;
   }
+}
+
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+/*returning values*/
+
+/*value for screen reader*/
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/*login container */
+.login__container {
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample87.jpg");
+  background-repeat: repeat-x;
+
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/*login form */
+.login__form {
+  width: 600px;
+  height: 250px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /*  background: rgba(70, 50, 80, 0.4); */
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 0 25px;
+  letter-spacing: 2px;
+}
+/*login title, also sr only */
+.login__title {
+  font-size: 1.8em;
+  letter-spacing: 2px;
+}
+
+/*input & password label*/
+.login__input-label,
+.login__password-label {
+  /*padding: 0.4em;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 1em;
+  width: 250px;
+  line-height: 1.6em;
+  color: white;
+  font-size: 1em;
+  letter-spacing: 2px;
+}
+/*text & password input field*/
+input[type="text"],
+input[type="email"] {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid white;
+  color: white;
+  line-height: 1.6em;
+  text-align: right;
+  font-size: 1em;
+  letter-spacing: 2px;
+}
+/*login button*/
+.login__login-btn {
+  /* padding: 0.4em; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 250px;
+  line-height: 1.6em;
+  margin-right: 4%;
+  border-color: white;
+  color: white;
+  background: transparent;
+  padding: 5px;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  margin: 10px 0;
+  margin-top: 3em;
+
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-sizing: border-box;
+  transition: all 0.25s ease;
+  opacity: 0.65;
+  border-style: solid;
+  border-width: 1px;
+}
+/*login button change on hover*/
+.login__login-btn:hover {
+  /*  background: rgb(34, 191, 172); */
+  border-color: #2980b9;
+  color: #2980b9;
+  opacity: 1;
+}
+/*text & password input field change on hover: DONT USE, muisloze mensen kunnen moeilijk de website raadplegen*/
+input[type="text"]:focus,
+input[type="email"]:focus {
+  outline: 0;
+  /* outline-bottom: 1px solid rgb(34, 191, 172);*/
+  border-bottom: 1px solid #2980b9;
+  border-right: 1px solid #2980b9;
 }

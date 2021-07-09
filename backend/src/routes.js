@@ -1,6 +1,20 @@
 import app from "./app";
 import db from "./db";
 import initializeDatabase from "./controller";
+import multer from "multer";
+import path from "path";
+
+const multerStorage = multer.diskStorage({
+  destination: path.join(__dirname, "../public/images"),
+  filename: (req, file, cb) => {
+    const { fieldname, originalname } = file;
+    const date = Date.now();
+    // filename will be: image-1345923023436343-filename.png
+    const filename = `${fieldname}-${date}-${originalname}`;
+    cb(null, filename);
+  },
+});
+const upload = multer({ storage: multerStorage });
 
 const start = async () => {
   const controller = await initializeDatabase();
@@ -29,15 +43,17 @@ const start = async () => {
     }
   });
 
-  app.post("/contact", async (req, res, next) => {
+  app.post("/contact", upload.single("image"), async (req, res, next) => {
     try {
+      console.log(req.file.filename);
       const id = await controller.createContact({
         name: req.query.name,
         email: req.query.email,
+        image: req.file.filename,
       });
       res.json({
         success: true,
-        result: id,
+        result: { id, image: req.file.filename },
       });
     } catch (e) {
       next(e);

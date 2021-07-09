@@ -19,7 +19,7 @@ export default function Navbar() {
       <div className="nav-links">
         <Link to="/">About</Link>
         <Link to="/contacts">Contacts</Link>
-
+        <Link to="/addcontact">Add Contact</Link>
         <Link to="/profile">My Profile</Link>
       </div>
     </div>

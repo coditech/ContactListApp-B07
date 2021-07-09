@@ -4,6 +4,7 @@ import Contacts from "./pages/Contacts";
 import Navbar from "./components/Navbar";
 import { withRouter, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import AddContact from "./pages/AddContact";
 
 class App extends React.Component {
   state = {
@@ -42,6 +43,42 @@ class App extends React.Component {
       console.log(e);
     }
   };
+
+  addContact = async (blah) => {
+    try {
+      const body = new FormData();
+      body.append("image", blah.image);
+      const response = await fetch(
+        `http://localhost:8000/contact?name=${blah.name}&email=${blah.email}`,
+        {
+          method: "POST",
+          body,
+        }
+      );
+      const results = await response.json();
+      if (results.success) {
+        // remove the user from the current list of users
+        /*  const contacts = this.state.contacts.filter(
+          (contact) => contact.id !== id
+        );
+        this.setState({ contacts }); */
+        const contacts = [
+          ...this.state.contacts,
+          {
+            id: results.result.id,
+            name: blah.name,
+            email: blah.email,
+            image: results.result.image,
+          },
+        ];
+        this.setState({ contacts });
+      } else {
+        this.setState({ error_message: results.message });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   render() {
     return (
       <>
@@ -57,6 +94,12 @@ class App extends React.Component {
                 deleteContact={this.deleteContact}
                 {...props}
               />
+            )}
+          />
+          <Route
+            path="/addcontact"
+            render={(props) => (
+              <AddContact addContact={this.addContact} {...props} />
             )}
           />
         </Switch>
